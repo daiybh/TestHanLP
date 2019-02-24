@@ -18,36 +18,7 @@ public class Fenci {
 
 	Map<String, Integer> map = new HashMap<String, Integer>();
 
-	private String readFile(String filePath) {
-		File file02 = new File(filePath);
-		FileInputStream is = null;
-		StringBuilder stringBuilder = null;
-		try {
-			if (file02.length() != 0) {
-				/**
-				 * 文件有内容才去读文件
-				 */
-				is = new FileInputStream(file02);
-				InputStreamReader streamReader = new InputStreamReader(is);
-				BufferedReader reader = new BufferedReader(streamReader);
-				String line;
-				stringBuilder = new StringBuilder();
-				while ((line = reader.readLine()) != null) {
-					// stringBuilder.append(line);
-					stringBuilder.append(line);
-				}
-				reader.close();
-				is.close();
-			} else {
-				// mLoadingLayout.setStatus(LoadingLayout.Empty);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return String.valueOf(stringBuilder);
-
-	}
+	
 
 	void pushToMap(String str) {
 		if (map.get(str) == null) {
@@ -59,7 +30,7 @@ public class Fenci {
 	}
 
 	private void doFenciByHanlp(String filePath) {
-		String xx = readFile(filePath);
+		String xx = TextFileReader.readFile(filePath);
 		List<Term> vRet = HanLP.segment(xx);
 
 		for (Term term : vRet) {
