@@ -1,4 +1,5 @@
 package com.Fenci;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,16 +38,16 @@ public class TextFileReader {
 						loc++;
 						if (read >= 0xF0)
 							break;
-						if (0x80 <= read && read <= 0xBF) // ��������BF���µģ�Ҳ����GBK
+						if (0x80 <= read && read <= 0xBF) // 单独出现BF以下的，也算是GBK
 							break;
 						if (0xC0 <= read && read <= 0xDF) {
 							read = bis.read();
 							if (0x80 <= read && read <= 0xBF)
-								// ˫�ֽ� (0xC0 - 0xDF) (0x80 - 0xBF),Ҳ������GB������
+								// 双字节 (0xC0 - 0xDF) (0x80 - 0xBF),也可能在GB编码内
 								continue;
 							else
 								break;
-						} else if (0xE0 <= read && read <= 0xEF) { // Ҳ�п��ܳ������Ǽ��ʽ�С
+						} else if (0xE0 <= read && read <= 0xEF) { // 也有可能出错，但是几率较小
 							read = bis.read();
 							if (0x80 <= read && read <= 0xBF) {
 								read = bis.read();
@@ -76,8 +77,8 @@ public class TextFileReader {
 
 		private static String getEncode(int flag1, int flag2, int flag3) {
 			String encode = "";
-			// txt�ļ��Ŀ�ͷ���������ֽڣ��ֱ���FF��FE��Unicode��,
-			// FE��FF��Unicode big endian��,EF��BB��BF��UTF-8��
+			// txt文件的开头会多出几个字节，分别是FF、FE（Unicode）,
+			// FE、FF（Unicode big endian）,EF、BB、BF（UTF-8）
 			if (flag1 == 255 && flag2 == 254) {
 				encode = "Unicode";
 			} else if (flag1 == 254 && flag2 == 255) {
@@ -85,34 +86,34 @@ public class TextFileReader {
 			} else if (flag1 == 239 && flag2 == 187 && flag3 == 191) {
 				encode = "UTF8";
 			} else {
-				encode = "asci";// ASCII��
+				encode = "asci";// ASCII码
 			}
 			return encode;
 		}
 	}
 
 	/**
-	 * ͨ��·����ȡ�ļ������ݣ����������Ϊ�õ����ַ�����Ϊ���壬Ϊ����ȷ��ȡ�ļ��������룩��ֻ�ܶ�ȡ�ı��ļ�����ȫ������
+	 * 通过路径获取文件的内容，这个方法因为用到了字符串作为载体，为了正确读取文件（不乱码），只能读取文本文件，安全方法！
 	 */
 	public static String readFile(String path) {
 		String data = null;
-		// �ж��ļ��Ƿ����
+		// 判断文件是否存在
 		File file = new File(path);
 		if (!file.exists()) {
 			return data;
 		}
-		// ��ȡ�ļ������ʽ
+		// 获取文件编码格式
 		String code = FileEncode.getFileEncode(path);
 		InputStreamReader isr = null;
 		try {
-			// ���ݱ����ʽ�����ļ�
+			// 根据编码格式解析文件
 			if ("asci".equals(code)) {
-				// �������GBK���룬�����û��������ʽ����Ϊ����Ĭ�ϱ��벻���ڲ���ϵͳ����
+				// 这里采用GBK编码，而不用环境编码格式，因为环境默认编码不等于操作系统编码
 				// code = System.getProperty("file.encoding");
 				code = "GBK";
 			}
 			isr = new InputStreamReader(new FileInputStream(file), code);
-			// ��ȡ�ļ�����
+			// 读取文件内容
 			int length = -1;
 			char[] buffer = new char[1024];
 			StringBuffer sb = new StringBuffer();
