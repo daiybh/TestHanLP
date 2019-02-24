@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-
+import java.util.List;
 import java.util.Map;
 
 import com.hankcs.hanlp.HanLP;
@@ -25,7 +25,7 @@ public class Fenci {
 		try {
 			if (file02.length() != 0) {
 				/**
-				 * 文件有内容才去读文件
+				 * 鏂囦欢鏈夊唴瀹规墠鍘昏鏂囦欢
 				 */
 				is = new FileInputStream(file02);
 				InputStreamReader streamReader = new InputStreamReader(is);
@@ -60,7 +60,7 @@ public class Fenci {
 
 	private void doFenciByHanlp(String filePath) {
 		String xx = readFile(filePath);
-		var vRet = HanLP.segment(xx);
+		List<Term> vRet = HanLP.segment(xx);
 
 		for (Term term : vRet) {
 

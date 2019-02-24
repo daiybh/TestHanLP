@@ -26,15 +26,15 @@ public class DemoUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane = null;
 	private JTextPane textResult = null;
-	private Box box = null; // ·ÅÊäÈë×é¼şµÄÈİÆ÷
-	private JButton buttonStartWork = null, buttonClear = null,buttonSelect=null; // ²åÈë°´Å¥;Çå³ı°´Å¥
-	private JTextField textFilePath = null; // ÊäÈë¿ò
+	private Box box = null; // æ”¾è¾“å…¥ç»„ä»¶çš„å®¹å™¨
+	private JButton buttonStartWork = null, buttonClear = null,buttonSelect=null; // æ’å…¥æŒ‰é’®;æ¸…é™¤æŒ‰é’®
+	private JTextField textFilePath = null; // è¾“å…¥æ¡†
 
 	private StyledDocument doc = null;
 
 	public DemoUI() {
-		super("´ÊÆµÍ³¼Æ");
-		try { // Ê¹ÓÃWindowsµÄ½çÃæ·ç¸ñ
+		super("è¯é¢‘ç»Ÿè®¡");
+		try { // ä½¿ç”¨Windowsçš„ç•Œé¢é£æ ¼
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,53 +42,52 @@ public class DemoUI extends JFrame {
 
 		textResult = new JTextPane();
 		textResult.setEditable(false);
-		doc = textResult.getStyledDocument(); // »ñµÃJTextPaneµÄDocument
+		doc = textResult.getStyledDocument(); // è·å¾—JTextPaneçš„Document
 		scrollPane = new JScrollPane(textResult);
 		scrollPane.setPreferredSize(new Dimension(400, 400));
 		textFilePath = new JTextField(18);
-		buttonStartWork = new JButton("·ÖÎö"); // 
-		buttonClear = new JButton("Çå¿Õ"); // Çå³ı
+		buttonStartWork = new JButton("åˆ†æ"); // 
+		buttonClear = new JButton("æ¸…ç©º"); // æ¸…é™¤
 		buttonSelect = new JButton("...");
 		
 
-		buttonStartWork.addActionListener(new ActionListener() { // ·ÖÎöÎÄ×ÖµÄÊÂ¼ş
+		buttonStartWork.addActionListener(new ActionListener() { // åˆ†ææ–‡å­—çš„äº‹ä»¶
 			public void actionPerformed(ActionEvent e) {
 				startAnalyze();				
 			}
 		});
 
-		buttonClear.addActionListener(new ActionListener() { // Çå³ıÊÂ¼ş
+		buttonClear.addActionListener(new ActionListener() { // æ¸…é™¤äº‹ä»¶
 			public void actionPerformed(ActionEvent e) {
 				textResult.setText("");
 			}
 		});
 		buttonSelect.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JFileChooser jfc=new JFileChooser();
 				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
-				jfc.showDialog(new JLabel(), "Ñ¡Ôñ");
+				jfc.showDialog(new JLabel(), "é€‰æ‹©");
 				File file=jfc.getSelectedFile();
 				if(file==null)return;
 				if(file.isDirectory()){
-					System.out.println("ÎÄ¼ş¼Ğ:"+file.getAbsolutePath());
+					System.out.println("æ–‡ä»¶å¤¹:"+file.getAbsolutePath());
 				}else if(file.isFile()){
-					//System.out.println("ÎÄ¼ş:"+file.getAbsolutePath());
+					//System.out.println("æ–‡ä»¶:"+file.getAbsolutePath());
 					textFilePath.setText(file.getAbsolutePath());
 				}	
 			}
 			
 		});
 
-		box = Box.createVerticalBox(); // Êú½á¹¹
-		Box box_1 = Box.createHorizontalBox(); // ºá½á¹¹
+		box = Box.createVerticalBox(); // ç«–ç»“æ„
+		Box box_1 = Box.createHorizontalBox(); // æ¨ªç»“æ„
 		//box.add(box_1);
-		box.add(Box.createVerticalStrut(8)); // Á½ĞĞµÄ¼ä¾à
+		box.add(Box.createVerticalStrut(8)); // ä¸¤è¡Œçš„é—´è·
 		box.add(box_1);
-		box.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8)); // 8¸öµÄ±ß¾à
-		// ¿ªÊ¼½«ËùĞè×é¼ş¼ÓÈëÈİÆ÷
+		box.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8)); // 8ä¸ªçš„è¾¹è·
+		// å¼€å§‹å°†æ‰€éœ€ç»„ä»¶åŠ å…¥å®¹å™¨
 
 		
 		box_1.add(textFilePath);
@@ -98,7 +97,7 @@ public class DemoUI extends JFrame {
 		box_1.add(buttonStartWork);
 		box_1.add(Box.createHorizontalStrut(8));
 		box_1.add(buttonClear);
-		this.getRootPane().setDefaultButton(buttonStartWork); // Ä¬ÈÏ»Ø³µ°´Å¥
+		this.getRootPane().setDefaultButton(buttonStartWork); // é»˜è®¤å›è½¦æŒ‰é’®
 		this.getContentPane().add(scrollPane);
 		this.getContentPane().add(box, BorderLayout.SOUTH);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,16 +115,16 @@ public class DemoUI extends JFrame {
 		String filePath = textFilePath.getText();
 		if(filePath.length()<3)
 		{
-			updateTextResult("ÎÄ¼şÂ·¾¶²»ÕıÈ·");
+			updateTextResult("æ–‡ä»¶è·¯å¾„ä¸æ­£ç¡®");
 			return;
 		}
-		//Èç¹ûÊÇÍøÂçÎÄ¼ş,ÏÂÔØ²¢·ÖÎö
+		//å¦‚æœæ˜¯ç½‘ç»œæ–‡ä»¶,ä¸‹è½½å¹¶åˆ†æ
 		
-		try { // ¿ªÊ¼·ÖÎö		
-			updateTextResult("¿ªÊ¼·ÖÎö:"+filePath);
+		try { // å¼€å§‹åˆ†æ		
+			updateTextResult("å¼€å§‹åˆ†æ:"+filePath);
 			fc.doFenci(filePath);
 			String str = fc.getResult();
-			updateTextResult("·ÖÎö½á¹û:\n"+str);
+			updateTextResult("åˆ†æç»“æœ:\n"+str);
 		} 
 		catch(java.io.FileNotFoundException e)
 		{
