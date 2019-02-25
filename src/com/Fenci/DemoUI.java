@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
@@ -67,7 +68,8 @@ public class DemoUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JFileChooser jfc=new JFileChooser();
-				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
+				jfc.setFileSelectionMode(JFileChooser.FILES_ONLY );
+				jfc.setFileFilter(new FileNameExtensionFilter("文本文档(*.txt,*.md)","txt","md","*.*"));
 				jfc.showDialog(new JLabel(), "选择");
 				File file=jfc.getSelectedFile();
 				if(file==null)return;
