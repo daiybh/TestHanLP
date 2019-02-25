@@ -29,8 +29,9 @@ public class Fenci {
 		}
 	}
 
-	private void doFenciByHanlp(String filePath) {
+	private boolean doFenciByHanlp(String filePath) {
 		String xx = TextFileReader.readFile(filePath);
+		if(xx==null || xx.length()<1)return false;
 		List<Term> vRet = HanLP.segment(xx);
 
 		for (Term term : vRet) {
@@ -38,12 +39,12 @@ public class Fenci {
 			String str = term.word;
 			pushToMap(str.toString());
 		}
+		return true;
 	}
 
-	public void doFenci(String filePath) throws IOException {
+	public boolean doFenci(String filePath) throws IOException {
 		map.clear();
-		doFenciByHanlp(filePath);
-
+		return doFenciByHanlp(filePath);
 	}
 
 	private void doFenci_byLocal(String filePath) throws IOException {

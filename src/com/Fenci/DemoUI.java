@@ -122,8 +122,9 @@ public class DemoUI extends JFrame {
 		
 		try { // 开始分析		
 			updateTextResult("开始分析:"+filePath);
-			fc.doFenci(filePath);
-			String str = fc.getResult();
+			String str="\t分析失败,找不到文件";
+			if(fc.doFenci(filePath))
+			 str= fc.getResult();
 			updateTextResult("分析结果:\n"+str);
 		} 
 		catch(java.io.FileNotFoundException e)
